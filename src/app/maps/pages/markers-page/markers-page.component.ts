@@ -5,6 +5,11 @@ interface MarkerColor {
   color: string;
   marker: Marker;
 }
+interface smallMarker {
+  color: string;
+  lnglat: number[];
+
+}
 
 @Component({
   selector: 'app-markers-page',
@@ -40,16 +45,18 @@ export class MarkersPageComponent {
     //   )
     //     .setLngLat(this.currentLocation)
     //     .addTo(this.map);
+
+    this.leerDelLocalStorage();
   }
 
   crearMarcador() {
     if (!this.map) { return }
     const color = '#xxxxxx'.replace(/x/g, y => (Math.random() * 16 | 0).toString(16));
     const lnglat = this.map.getCenter();
-    this.masMarcadores(lnglat, color);
+    this.guardarMarcador(lnglat, color);
   }
 
-  masMarcadores(lnglat: LngLat, color: string | 'red') {
+  guardarMarcador(lnglat: LngLat, color: string | 'red') {
     if (!this.map) { return }
     const marcador = new Marker(
       {
@@ -60,17 +67,45 @@ export class MarkersPageComponent {
       .setLngLat(lnglat)
       .addTo(this.map);
     this.currentMarkers.push({ marker: marcador, color: color });
+    this.guardarEnLocalStorage();
+
+    marcador.on('dragend', () => {
+      this.guardarEnLocalStorage();
+    })
   }
 
   eliminarMarcador(index: number) {
     this.currentMarkers[index].marker.remove();
     this.currentMarkers.splice(index, 1)
+    this.guardarEnLocalStorage();
   }
 
   flytoo(marker: Marker) {
     this.map?.flyTo({
       zoom: 14,
       center: marker.getLngLat(),
+    })
+  }
+
+  guardarEnLocalStorage() {
+    const smallmarker: smallMarker[] = this.currentMarkers.map((colorMarker) => {
+      return {
+        color: colorMarker.color,
+        lnglat: colorMarker.marker.getLngLat().toArray()
+      }
+    })
+    localStorage.setItem('smallMarkers', JSON.stringify(smallmarker))
+  }
+
+  leerDelLocalStorage() {
+    const string = localStorage.getItem('smallMarkers') ?? '[]';
+    const smallmarkers: smallMarker[] = JSON.parse(string);
+
+    smallmarkers.forEach(({ color, lnglat }) => {
+      const [lng, lat] = lnglat;
+      const coordenadas = new LngLat(lng, lat);
+
+      this.guardarMarcador(coordenadas, color);
     })
   }
 }
