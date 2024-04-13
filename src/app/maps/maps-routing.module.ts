@@ -6,6 +6,10 @@ import { ZoomPageComponent } from './pages/zoom-page/zoom-page.component';
 import { MarkersPageComponent } from './pages/markers-page/markers-page.component';
 import { PropertiesPageComponent } from './pages/properties-page/properties-page.component';
 
+import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
+(mapboxgl as any).accessToken =
+  'pk.eyJ1IjoiZGV2LXhhdmllciIsImEiOiJjbHV5YTF0aTIwdGc0MnFvOHB5aTAwcm93In0.qq6YgbiqrWBeW2oO9xvhbg';
+
 const routes: Routes = [
   {
     path: '',
