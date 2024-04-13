@@ -1,1 +1,13 @@
-<p>markers-page works!</p>
+<div id="map" #map></div>
+
+<ul class="rounded-xl p-2 fixed top-5 right-5 cursor-pointer">
+  <li class="rounded-xl text-center pt-3 pb-3 text-white bold font-mono font-bold p-2" (dblclick)="eliminarMarcador(i)"
+    *ngFor="let colorMarker of currentMarkers; let i = index" [ngStyle]="{ backgroundColor:colorMarker.color}"
+    (click)="flytoo(colorMarker.marker)">
+    Marcador {{ i + 1 }}
+  </li>
+</ul>
+
+<button class="rounded-lg p-2 bg-black text-white fixed bottom-5 right-5" (click)="crearMarcador()">
+  + Agregar marcador
+</button>
