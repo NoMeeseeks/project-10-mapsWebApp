@@ -1,6 +1,6 @@
-<ul class="bg-white rounded-xl p-2 border-solid border-1 border-gray-100">
-  <li class="hover:bg-violet-300 rounded-xl text-center pt-3 pb-3 text-black bold font-mono font-bold"
-    *ngFor="let items of menuItems" [routerLink]="[items.route]" routerLinkActive="bg-violet-100">
+<ul class="bg-white rounded-xl p-2 ">
+  <li class="hover:bg-gray-300 rounded-xl text-center pt-3 pb-3 text-black bold font-mono font-bold"
+    *ngFor="let items of menuItems" [routerLink]="[items.route]" routerLinkActive="bg-gray-100">
     {{ items.name }}
   </li>
 </ul>
